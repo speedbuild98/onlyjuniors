@@ -43,7 +43,7 @@ class CommunityController extends Controller
     {
         Community::create($request->validated() + ['user_id' => auth()->id()]);
 
-        return redirect()->route('communities.index');
+        return redirect()->route('communities.index')->with('message', 'Community created succesfully');;
     }
 
     /**
@@ -78,7 +78,7 @@ class CommunityController extends Controller
     public function update(CommunityStoreRequest $request, Community $community)
     {
         $community->update($request->validated());
-        return redirect()->route('communities.index');
+        return redirect()->route('communities.index')->with('message', 'Community updated succesfully');
     }
 
     /**
@@ -87,8 +87,9 @@ class CommunityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Community $community)
     {
-        //
+        $community->delete();
+        return back()->with('message', 'Community deleted succesfully');
     }
 }
